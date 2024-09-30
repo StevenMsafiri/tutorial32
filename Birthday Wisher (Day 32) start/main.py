@@ -24,6 +24,7 @@
 
 import smtplib
 import datetime as dt
+import random
 
 now = dt.datetime.now()
 day_of_week = now.weekday()
@@ -31,9 +32,17 @@ day_of_week = now.weekday()
 email = 'ianleonardmk47@gmail.com'
 password = 'vbwtuxcedgdtfozi'
 
-if day_of_week == 6:
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as connection:
-        connection.starttls()
-        connection.login(email, password )
-        connection.sendmail(from_addr=email, to_addrs="mandegemasebu@yahoo.com", msg="Subject: Morning Alarm!\n\nHey, Wake up!")
-        connection.close()
+with open(file="quotes.txt", mode="r") as text_file:
+    quotes = text_file.read()
+    quotes = quotes.split("\n")
+
+    if day_of_week == 0:
+        with smtplib.SMTP('smtp.gmail.com', 587) as connection:
+            connection.starttls()
+            connection.login(email, password)
+            connection.sendmail(from_addr=email, to_addrs="mandegemasebu@yahoo.com",
+                                msg="Subject: Monday Motivation!\n\nHey, Wake up!\n"
+                                    f"{random.choice(quotes)}")
+
+
+            connection.close()
